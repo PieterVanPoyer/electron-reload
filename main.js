@@ -11,6 +11,7 @@ const config = require(path.join(appPath, 'package.json'));
 const mainFile = path.join(appPath, config.main || 'index.js');
 const ignoredPathsWithoutMain = [/node_modules|[/\\]\./];
 const ignoredPaths = [mainFile, /node_modules|[/\\]\./];
+const debounce = require('lodash.debounce');
 
 /**
  * Creates a callback for hard resets.
@@ -78,22 +79,26 @@ class ElectronReload {
             this._browserWindows.push(bw);
 
             // Remove closed windows from list of maintained items
-            bw.on('closed', function () {
-                const i = this._browserWindows.indexOf(bw); // Must use current index
-                this._browserWindows.splice(i, 1);
+            bw.on('closed', () => {
+                if(this._browserWindows) {
+                    const i = this._browserWindows.indexOf(bw); // Must use current index
+                    this._browserWindows.splice(i, 1);
+                }
             })
         })
 
         // Enable default soft reset
         if(options.customSoftResetHandler) {
-            this._watcher.on('change', () => {
+            this._watcher.on('change', debounce(() => {
                 options.customSoftResetHandler(this._browserWindows);
-            });
+            }, 200)) ;
         } else {
             this._softResetHandler = () => browserWindows.forEach(bw => {
                 bw.webContents.reloadIgnoringCache()
             });
-            this._watcher.on('change', this._softResetHandler);
+            this._watcher.on('change', debounce(() => {
+                this._softResetHandler()
+            }, 200));
         }
 
         // Preparing hard reset if electron executable is given in options

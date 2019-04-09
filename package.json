@@ -1,6 +1,6 @@
 {
   "name": "amaris-electron-reload",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Simplest way to reload an electron app on file changes!",
   "main": "main.js",
   "repository": {
@@ -22,6 +22,7 @@
     "url": "https://github.com/yan-foto/electron-reload/issues"
   },
   "dependencies": {
-    "chokidar": "^2.0.4"
+    "chokidar": "^2.0.4",
+    "lodash.debounce": "^4.0.8"
   }
 }
