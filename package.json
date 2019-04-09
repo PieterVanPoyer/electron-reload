@@ -1,6 +1,6 @@
 {
-  "name": "electron-reload",
-  "version": "1.4.0",
+  "name": "amaris-electron-reload",
+  "version": "1.0.0",
   "description": "Simplest way to reload an electron app on file changes!",
   "main": "main.js",
   "repository": {
@@ -15,6 +15,9 @@
   ],
   "author": "Yan Foto <yan.foto@quaintous.com>",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "http://nexus-npm.haven.antwerpen.local/repository/amaris-npm-internal"
+  },
   "bugs": {
     "url": "https://github.com/yan-foto/electron-reload/issues"
   },
